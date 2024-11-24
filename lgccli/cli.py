@@ -103,17 +103,18 @@ def main():
                     balances[i['currency']] -= i['amount']
                     print(f"""
     {i['reciever']} <- {style.YELLOW}{i['sender']}{style.RESET}. 
-    amount: {i['currency']}${i['amount']} 
-    at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+        amount: {i['currency']}${i['amount']} 
+        at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+        balance after: {i['currency']}${balances[i['currency']]}
 """)
                 else:
                     balances[i['currency']] += i['amount']
                     print(f"""
     {i['sender']} -> {style.YELLOW}{i['reciever']}{style.RESET}. 
-    amount: {i['currency']}${i['amount']} 
-    at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+        amount: {i['currency']}${i['amount']} 
+        at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+        balance after: {i['currency']}${balances[i['currency']]}
 """)
-                print(f"\tBalance after: {i['currency']}${balances[i['currency']]}")
         elif i == "address":
             print(n)
         elif i == "create":
