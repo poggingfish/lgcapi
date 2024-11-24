@@ -3,6 +3,7 @@ module main
 import db.sqlite
 import veb
 import rand
+import time
 
 @[table: 'currencies']
 struct Currency {
@@ -19,11 +20,12 @@ struct User {
 
 @[table: 'transactions']
 struct Transaction {
-	id       int @[primary; serial]
-	currency string
-	amount   int
-	sender   string
-	reciever string
+	id        int @[primary; serial]
+	currency  string
+	amount    int
+	timestamp i64
+	sender    string
+	reciever  string
 }
 
 pub struct Context {
@@ -89,7 +91,7 @@ pub fn (app &App) create_currency(mut ctx Context, currency_name string, private
 	if user.len != 1 {
 		return ctx.text('user doesnt exist!')
 	}
-	if user.first().address == "burn" {
+	if user.first().address == 'burn' {
 		return ctx.text('you cannot create a currency from burn.')
 	}
 	old_currency := sql app.database {
@@ -110,6 +112,7 @@ pub fn (app &App) create_currency(mut ctx Context, currency_name string, private
 		reciever: user.first().address
 		currency: currency_name
 		amount:   initial_balance
+		timestamp: time.now().unix_micro()
 	}
 	sql app.database {
 		insert tx into Transaction
@@ -160,7 +163,7 @@ fn (app &App) send_transaction(mut ctx Context, key string, reciever string, amo
 	if user.len != 1 {
 		return ctx.text('sender doesnt exist!')
 	}
-	if user.first().address == "burn" {
+	if user.first().address == 'burn' {
 		return ctx.text('you cannot send from burn.')
 	}
 	currency_check := sql app.database {
@@ -202,6 +205,7 @@ fn (app &App) send_transaction(mut ctx Context, key string, reciever string, amo
 		currency: currency
 		reciever: reciever
 		amount:   amount
+		timestamp: time.now().unix_micro()
 	}
 
 	sql app.database {
@@ -225,7 +229,7 @@ fn main() {
 	}!
 	if burn_u.len < 1 {
 		burn := User{
-			address: "burn",
+			address:     'burn'
 			private_key: ''
 		}
 		sql app.database {
