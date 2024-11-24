@@ -2,7 +2,7 @@ import requests
 import os
 import json
 
-server = 'http://localhost:8080'
+server = 'http://38.46.221.76:54213'
 key = ''
 
 class style():
