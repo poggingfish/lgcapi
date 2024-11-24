@@ -1,6 +1,7 @@
 import requests
 import os
 import json
+import datetime
 
 server = 'http://38.46.221.76:54213'
 key = ''
@@ -100,10 +101,18 @@ def main():
                     balances[i['currency']] = 0
                 if i['sender'] == c:
                     balances[i['currency']] -= i['amount']
-                    print(f"{i['reciever']} <- {style.YELLOW}{i['sender']}{style.RESET}. amount: {i['currency']}${i['amount']}")
+                    print(f"""
+    {i['reciever']} <- {style.YELLOW}{i['sender']}{style.RESET}. 
+    amount: {i['currency']}${i['amount']} 
+    at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+""")
                 else:
                     balances[i['currency']] += i['amount']
-                    print(f"{i['sender']} -> {style.YELLOW}{i['reciever']}{style.RESET}. amount: {i['currency']}${i['amount']}")
+                    print(f"""
+    {i['sender']} -> {style.YELLOW}{i['reciever']}{style.RESET}. 
+    amount: {i['currency']}${i['amount']} 
+    at {datetime.datetime.fromtimestamp(i['timestamp']/1000/1000, datetime.datetime.now().astimezone().tzinfo)}
+""")
                 print(f"\tBalance after: {i['currency']}${balances[i['currency']]}")
         elif i == "address":
             print(n)

@@ -112,7 +112,7 @@ pub fn (app &App) create_currency(mut ctx Context, currency_name string, private
 		reciever: user.first().address
 		currency: currency_name
 		amount:   initial_balance
-		timestamp: time.now().unix_micro()
+		timestamp: time.utc().unix_micro()
 	}
 	sql app.database {
 		insert tx into Transaction
@@ -205,7 +205,7 @@ fn (app &App) send_transaction(mut ctx Context, key string, reciever string, amo
 		currency: currency
 		reciever: reciever
 		amount:   amount
-		timestamp: time.now().unix_micro()
+		timestamp: time.utc().unix_micro()
 	}
 
 	sql app.database {
